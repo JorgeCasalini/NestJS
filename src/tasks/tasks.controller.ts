@@ -1,19 +1,24 @@
-import { Controller, Delete, Get, Patch, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from "@nestjs/common";
 import { TaskService } from "./tasks.service";
 
 @Controller('/tasks')
 export class TaskController {
-
-  constructor(private tasksService: TaskService) { }
+  constructor(private tasksService: TaskService) {}
 
   @Get()
-  getAllTasks() {
+  getAllTasks(@Query() query: any) {
+    console.log(query)
     return this.tasksService.getTasks();
   }
 
+  @Get('/:id')
+  getTasks(@Param('id') id: string) {
+      return this.tasksService.getTask(parseInt(id))
+  }
+
   @Post()
-  createTasks() {
-    return this.tasksService.createTask();
+  createTasks(@Body() task: any) {
+    return this.tasksService.createTask(task);
   }
 
   @Put()
